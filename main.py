@@ -4,6 +4,7 @@ This is the main python module of this project.
 
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import schemas
 import models
 from database import Base, engine, SessionLocal
@@ -22,6 +23,23 @@ def get_session():
 # Created app object using the FastAPI class
 app = FastAPI()
 
+# Origin URLS list
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+    "https://chandanchoudhury.in",
+]
+
+# Add CORS middleware to the app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # This is a decorator that tells FastAPI that this function is a path operation
 @app.get("/")
