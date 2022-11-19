@@ -44,7 +44,7 @@ app.add_middleware(
 # This is a decorator that tells FastAPI that this function is a path operation
 @app.get("/")
 # This is a path operation function to get all addresses from DB
-def getAddressess(session: Session = Depends(get_session)):
+def get_addressess(session: Session = Depends(get_session)):
     try:
         # Query all addresses from DB
         addresses = session.query(models.Address).all()
@@ -64,7 +64,7 @@ def getAddressess(session: Session = Depends(get_session)):
 
 @app.get("/{id}")
 # This is a path operation function to get a specific address from DB by ID(Unique)
-def getAddress(id:int, session: Session = Depends(get_session)):
+def get_address_by_id(id:int, session: Session = Depends(get_session)):
     try:
         # Query the address from DB by ID
         address_by_id = session.query(models.Address).get(id)
@@ -84,7 +84,7 @@ def getAddress(id:int, session: Session = Depends(get_session)):
 
 @app.get("/{longitude}/{latitude}")
 # This is a path operation function to get a specific address from DB by longitude and latitude
-def getAddressessByLocation(longitude:float, latitude:float, session: Session = Depends(get_session)):
+def get_addressess_by_location(longitude:float, latitude:float, session: Session = Depends(get_session)):
     try:
         # Query the address from DB by longitude and latitude
         addresses_by_location = session.query(models.Address).filter(models.Address.longitude == longitude, models.Address.latitude == latitude).all()
@@ -105,7 +105,7 @@ def getAddressessByLocation(longitude:float, latitude:float, session: Session = 
 @app.get("/{longitude}/{latitude}/{radius}")
 # This is a path operation function to get a specific address from DB by longitude and latitude and radius(in KM)
 # Here user need to share his logituude and latitude and a radius value in KM to check if there are any addresses in the given radius from his location
-def getAddressessByLocationAndRadius(longitude:float, latitude:float, radius:float, session: Session = Depends(get_session)):
+def get_addressess_by_location_and_radius(longitude:float, latitude:float, radius:float, session: Session = Depends(get_session)):
     try:
         # Convert the radius from KM to degrees (Let's take 1 degree = 111 KM as reference here)
         radius_in_degree = radius / 111
@@ -127,7 +127,7 @@ def getAddressessByLocationAndRadius(longitude:float, latitude:float, radius:flo
 
 @app.post("/")
 # This is a path operation function to add a new address to DB
-def addAddress(address: schemas.Address, session: Session = Depends(get_session)):
+def add_address(address: schemas.Address, session: Session = Depends(get_session)):
     try:
         # Create a new address object
         new_address = models.Address(city = address.city, longitude = address.longitude, latitude = address.latitude)
@@ -148,7 +148,7 @@ def addAddress(address: schemas.Address, session: Session = Depends(get_session)
 
 @app.put("/{id}")
 # This is a path operation function to update an existing address in DB by ID(Unique)
-def updateAddress(id:int, address: schemas.Address, session: Session = Depends(get_session)):
+def update_address(id:int, address: schemas.Address, session: Session = Depends(get_session)):
     try:
         # Query the address from DB by ID
         address_by_id = session.query(models.Address).get(id)
@@ -176,7 +176,7 @@ def updateAddress(id:int, address: schemas.Address, session: Session = Depends(g
 
 @app.delete("/{id}")
 # This is a path operation function to delete an existing address from DB by ID(Unique)
-def deleteAddress(id:int, session: Session = Depends(get_session)):
+def delete_address(id:int, session: Session = Depends(get_session)):
     try:
         # Query the address from DB by ID
         address_by_id = session.query(models.Address).get(id)
