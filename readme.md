@@ -59,17 +59,23 @@ uvicorn main:app --reload
 #### 6. Open the browser enter below url to test the API with FastAPI - Swagger UI :
 
 ```
-http://127.0.0.1:8000/docs#/
+http://127.0.0.1:8000/docs
+```
+
+or
+
+```
+http://localhost:8000/docs
 ```
 
 ## API ENDPOINTS
 
-| Method   | URL                                                     | Description                                              | Request body                                                 | Path Parameters                                    |
-| :------- | :------------------------------------------------------ | :------------------------------------------------------- | :----------------------------------------------------------- | :------------------------------------------------- |
-| `GET`    | `http://127.0.0.1:8000/`                                | Fetch all address                                        | Not Required                                                 | Not Required                                       |
-| `GET`    | `http://127.0.0.1:8000/{id}`                            | Fetch address by id                                      | Not Required                                                 | `id: int`                                          |
-| `GET`    | `http://127.0.0.1:8000/{longitude}/{latitude}`          | Fetch addresses by longitude and latitude                | Not Required                                                 | `longitude: float, latitude: float`                |
-| `GET`    | `http://127.0.0.1:8000/{longitude}/{latitude}/{radius}` | Fetch addresses by longitude, latitude and radius(in KM) | Not Required                                                 | `longitude: float, latitude: float, radius: float` |
-| `POST`   | `http://127.0.0.1:8000/`                                | Create a new address                                     | `{"city": "string", "longitude": float, "latitude": float }` | Not Required                                       |
-| `PUT`    | `http://127.0.0.1:8000/{id}`                            | Update address by id                                     | `{"city": "string", "longitude": float, "latitude": float }` | `id: int`                                          |
-| `DELETE` | `http://127.0.0.1:8000/{id}`                            | Delete address by id                                     | Not Required                                                 | `id: int`                                          |
+| Method   | Endpoints                          | Description                                              | Request body                                                 | Path Parameters                                    |
+| :------- | :--------------------------------- | :------------------------------------------------------- | :----------------------------------------------------------- | :------------------------------------------------- |
+| `GET`    | `/`                                | Fetch all address                                        | Not Required                                                 | Not Required                                       |
+| `GET`    | `/{id}`                            | Fetch address by id                                      | Not Required                                                 | `id: int`                                          |
+| `GET`    | `/{longitude}/{latitude}`          | Fetch addresses by longitude and latitude                | Not Required                                                 | `longitude: float, latitude: float`                |
+| `GET`    | `/{longitude}/{latitude}/{radius}` | Fetch addresses by longitude, latitude and radius(in KM) | Not Required                                                 | `longitude: float, latitude: float, radius: float` |
+| `POST`   | `/`                                | Create a new address                                     | `{"city": "string", "longitude": float, "latitude": float }` | Not Required                                       |
+| `PUT`    | `/{id}`                            | Update address by id                                     | `{"city": "string", "longitude": float, "latitude": float }` | `id: int`                                          |
+| `DELETE` | `/{id}`                            | Delete address by id                                     | Not Required                                                 | `id: int`                                          |
