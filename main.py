@@ -190,6 +190,7 @@ def update_address(id:int, address: schemas.Address, session: Session = Depends(
         if address_by_id == None:
             # If there is no address with the given ID in the DB, return a JSON response with status code 404 and a message
             return JSONResponse(status_code=404, content={"message": "No address found with the given id to update."})
+        # Update the address in the DB if below conditions are satisfied
         elif address.city == "":
             print("City name is empty")
             return JSONResponse(status_code=400, content={"message": "City name is required."})
@@ -200,7 +201,7 @@ def update_address(id:int, address: schemas.Address, session: Session = Depends(
             print("Latitude is not valid")
             return JSONResponse(status_code=400, content={"message": "Please enter valid Latitude."})
         else:
-            # If there is an address with the given ID in the DB, update the address with the new values
+            # If there is an address with the given ID in the DB and above conditions are satisfied, update the address with the new values
             address_by_id.city = address.city.strip()
             address_by_id.longitude = round(address.longitude, 6)
             address_by_id.latitude = round(address.latitude, 6)
