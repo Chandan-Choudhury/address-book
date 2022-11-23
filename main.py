@@ -150,17 +150,29 @@ def get_addressess_by_coordinates_and_distance(longitude:float, latitude:float, 
 def add_address(address: schemas.Address, session: Session = Depends(get_session)):
     try:
         # Create a new address object
-        new_address = models.Address(city = address.city, longitude = address.longitude, latitude = address.latitude)
+        new_address = models.Address(city = address.city.strip(), longitude = round(address.longitude, 6), latitude = round(address.latitude,6))
         # Log the new address to the console
-        print("addr",new_address.city)
-        # Add the new address to the DB
-        session.add(new_address)
-        # Commit the changes to the DB
-        session.commit()
-        # Refresh the session
-        session.refresh(new_address)
-        # Return a JSON response with status code 201 and the new address
-        return JSONResponse(status_code=201, content={"message": "Address added successfully."})
+        print("City name :",new_address.city)
+        print("Longitude :",new_address.longitude)
+        print("Latitude :",new_address.latitude)
+        # Add the new address to the DB if below conditions are satisfied
+        if new_address.city == "":
+            print("City name is empty")
+            return JSONResponse(status_code=400, content={"message": "City name is required."})
+        elif not -180 <= new_address.longitude <= 180 or new_address.longitude == "":
+            print("Longitude is not valid")
+            return JSONResponse(status_code=400, content={"message": "Please enter valid Longitude."})
+        elif not -90 <= new_address.latitude <= 90 or new_address.latitude == "":
+            print("Latitude is not valid")
+            return JSONResponse(status_code=400, content={"message": "Please enter valid Latitude."})
+        else:
+            session.add(new_address)
+            # Commit the changes to the DB
+            session.commit()
+            # Refresh the session
+            session.refresh(new_address)
+            # Return a JSON response with status code 201 and the new address
+            return JSONResponse(status_code=201, content={"message": "Address added successfully."})
     except:
         # If there is an error, return a JSON response with status code 500 and a message
         return JSONResponse(status_code=500, content={"message": "Something went wrong."})
@@ -178,11 +190,20 @@ def update_address(id:int, address: schemas.Address, session: Session = Depends(
         if address_by_id == None:
             # If there is no address with the given ID in the DB, return a JSON response with status code 404 and a message
             return JSONResponse(status_code=404, content={"message": "No address found with the given id to update."})
+        elif address.city == "":
+            print("City name is empty")
+            return JSONResponse(status_code=400, content={"message": "City name is required."})
+        elif not -180 <= address.longitude <= 180 or address_by_id.longitude == "":
+            print("Longitude is not valid")
+            return JSONResponse(status_code=400, content={"message": "Please enter valid Longitude."})
+        elif not -90 <= address.latitude <= 90 or address_by_id.latitude == "":
+            print("Latitude is not valid")
+            return JSONResponse(status_code=400, content={"message": "Please enter valid Latitude."})
         else:
             # If there is an address with the given ID in the DB, update the address with the new values
-            address_by_id.city = address.city
-            address_by_id.longitude = address.longitude
-            address_by_id.latitude = address.latitude
+            address_by_id.city = address.city.strip()
+            address_by_id.longitude = round(address.longitude, 6)
+            address_by_id.latitude = round(address.latitude, 6)
             # Commit the changes to the DB
             session.commit()
             # Refresh the session
